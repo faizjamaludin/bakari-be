@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+ id Int @id @default(autoincrement())
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+
+ email String @unique
+ password String
+ 
+ firstName String?
+ lastName String?
+ role String?
+
+ orders Order[]
+
+ @@map("users")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  
+  name String
+  price Float
+  stock Int
+  image_url String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category_id Int
+  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  orderItems Order_Item[]
+
+  @@map("products")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+
+  name String
+
+  createdAt DateTime @default(now())
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Order{
+  id Int @id @default(autoincrement())
+
+  total_amount Int
+  status String
+
+  createdAt DateTime @default(now())
+
+  user_id Int
+  users User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  orderItems Order_Item[]
+  payments Payment[]
+  
+  @@map("orders")
+}
+
+model Order_Item {
+  id Int @id @default(autoincrement())
+
+  quantity Int
+  price Float
+
+  order_id  Int
+  product_id Int
+
+  order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model Payment {
+   id Int @id @default(autoincrement())
+
+   payment_method String
+   amount_paid Float
+
+   payment_data DateTime @default(now())
+
+   order_id Int
+   order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+   @@map("payments")
+}
