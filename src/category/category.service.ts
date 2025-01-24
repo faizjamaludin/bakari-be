@@ -4,33 +4,38 @@ import { CategoryDto } from './dto';
 
 @Injectable()
 export class CategoryService {
-    constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
-    async createCategory(dto: CategoryDto) {
-        const name = this.formatWordUpperCase(dto.name);
-        const category = await this.prisma.category.create({
-            data: {
-                name: name
-            }
-        });
-        return category;
+  async createCategory(dto: CategoryDto) {
+    const name = this.formatWordUpperCase(dto.name);
+    const category = await this.prisma.category.create({
+      data: {
+        name: name,
+      },
+    });
+    return category;
+  }
 
-    }
+  async getCategories() {
+    const category = await this.prisma.category.findMany();
 
-    async getCategory(id: string) {
+    return category;
+  }
 
-        const category = await this.prisma.category.findUnique({
-            where: {
-                id: Number(id)
-            }
-        });
+  async getCategoryById(id: string) {
+    const category = await this.prisma.category.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
 
-        return category
-    }
+    return category;
+  }
 
-    formatWordUpperCase(word: string) {
-        return word.split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-    }
+  formatWordUpperCase(word: string) {
+    return word
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 }
