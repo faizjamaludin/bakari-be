@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -19,7 +21,17 @@ export class ProductController {
 
   @Get('all')
   async index() {
-    return await this.productService.findAll();
+    return await this.productService.getAllProduct();
+  }
+
+  @Get('/product/:id')
+  async getProductById(@Param('id') id: string) {
+    return await this.productService.getProductById(id);
+  }
+
+  @Get('cookies')
+  async getCookies(@Req() req) {
+    console.log(req.cookies);
   }
 
   @Post('create')

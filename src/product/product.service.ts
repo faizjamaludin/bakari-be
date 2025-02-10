@@ -6,7 +6,7 @@ import { ProductDto } from './dto';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
+  async getAllProduct() {
     const products = await this.prisma.product.findMany();
     return products;
   }
@@ -56,23 +56,16 @@ export class ProductService {
     return product;
   }
 
-  //   async uploadProduct(file: Express.Multer.File) {
-  //     if (!file) {
-  //       throw new BadRequestException('No file uploaded');
-  //     }
+  async getProductById(id: string) {
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        category: true,
+      },
+    });
 
-  //     //validate file type
-  //     const fileType = ['image/jpeg', 'image/jpg', 'image/png'];
-  //     if (!fileType.includes(file.mimetype)) {
-  //       throw new BadRequestException('Invalid file type');
-  //     }
-
-  //     //validate file size
-  //     const maxSize = 1024 * 1024 * 5; //5MB
-  //     if (file.size > maxSize) {
-  //       throw new BadRequestException('File size too large');
-  //     }
-
-  //     return { message: 'File uploaded successfully', filePath: file.path };
-  //   }
+    return product;
+  }
 }
