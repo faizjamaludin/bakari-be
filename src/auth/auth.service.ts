@@ -72,7 +72,8 @@ export class AuthService {
     }
 
     //send back the user
-    return this.signToken(user.id, user.email);
+    // return this.signToken(user.id, user.email);
+    return token;
   }
 
   // generate token function
