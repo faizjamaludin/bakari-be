@@ -1,23 +1,26 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class ProductDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    price: number;
+  @IsString()
+  description: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    stock: number;
+  @Transform(({ value }) => parseFloat(value))
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
 
-    @IsString()
-    @IsNotEmpty()
-    image_url: string;
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @IsNotEmpty()
+  stock: number;
 
-    @IsNumber()
-    @IsNotEmpty()
-    category_id: number;
-}   
+  @Transform(({ value }) => parseFloat(value))
+  @IsNumber()
+  @IsNotEmpty()
+  category_id: number;
+}

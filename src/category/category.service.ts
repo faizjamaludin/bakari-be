@@ -17,7 +17,11 @@ export class CategoryService {
   }
 
   async getCategories() {
-    const category = await this.prisma.category.findMany();
+    const category = await this.prisma.category.findMany({
+      include: {
+        products: true,
+      },
+    });
 
     return category;
   }

@@ -48,7 +48,7 @@ export class AuthService {
 
   // user sign in function
 
-  async signin(dto: AuthDto, req: Request, res: Response) {
+  async signin(dto: AuthDto) {
     //find user by email
     const user = await this.prisma.user.findUnique({
       where: {
@@ -71,10 +71,8 @@ export class AuthService {
       throw new ForbiddenException();
     }
 
-    res.cookie('accessToken', token);
-
     //send back the user
-    return { token: token };
+    return this.signToken(user.id, user.email);
   }
 
   // generate token function
