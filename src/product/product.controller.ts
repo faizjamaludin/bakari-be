@@ -35,7 +35,7 @@ export class ProductController {
   }
 
   @Post('create')
-  @UseInterceptors(FileInterceptor('img'))
+  @UseInterceptors(FileInterceptor('productImg'))
   async createProduct(
     @Body() dto: ProductDto,
     @UploadedFile() file: Express.Multer.File,

@@ -4,20 +4,20 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class ProductDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  productName: string;
 
   @IsString()
-  description: string;
+  productDesc: string;
 
   @Transform(({ value }) => parseFloat(value))
   @IsNumber()
   @IsNotEmpty()
-  price: number;
+  productPrice: number;
 
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
   @IsNotEmpty()
-  stock: number;
+  productStock: number;
 
   @Transform(({ value }) => parseFloat(value))
   @IsNumber()
